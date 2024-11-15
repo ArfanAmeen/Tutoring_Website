@@ -14,9 +14,9 @@
         <nav>
           <ul class="nav-links">
             <li><a href="./index.html">Home</a></li>
-            <li><a href="">Browse Classes</a></li>
+            <li><a href="./browse.html">Browse Classes</a></li>
             <li><a href="./tutorapp.html">Tutor Applicaiton</a></li>
-            <li><a href="">Sign In</a></li>
+            <li><a href="./profile.html">View Profile</a></li>
           </ul>
         </nav>
       </div>
@@ -34,20 +34,5 @@
   <footer class="footer">
     <p>&copy; 2024 (Website Name). All rights reserved.</p>
   </footer>
-  <script>
-    // Simulate user login state (you can replace this with actual logic)
-    const isLoggedIn = localStorage.getItem('auth_token') !== null; // Example logic: check if token exists
-  
-    document.addEventListener("DOMContentLoaded", () => {
-      const navLinks = document.querySelectorAll(".nav-links li a");
-  
-      navLinks.forEach(link => {
-        if (link.textContent.trim() === "Sign In" && isLoggedIn) {
-          link.textContent = "View Profile"; // Change text to 'View Profile'
-          link.setAttribute("href", "./profile.html"); // Update the link to go to the profile page
-        }
-      });
-    });
-  </script>
 </body>
 </html>

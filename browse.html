@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webpage with Sticky Footer</title>
+  
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="wrapper">
+    <header class="navbar">
+      <div class="container">
+        <h1 class="logo">Website name</h1>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./browse.html">Browse Classes</a></li>
+            <li><a href="./tutorapp.html">Tutor Applicaiton</a></li>
+            <li><a href="./profile.html">View Profile</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="content">
+        <div class="container mt-5">
+            <h2 class="text-center">Browse Available Sessions</h2>
+
+            <!-- Search Bar -->
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <input type="text" id="search" class="form-control" placeholder="Search for sessions...">
+                </div>
+            </div>
+
+            <!-- Class List -->
+            <div class="row" id="classList">
+                <!-- Hard coded, not from Database Example class cards -->
+                <div class="col-md-4 mb-3" data-class="Calculus I">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Calculus I</h5>
+                            <p class="card-text">Tutor: Ahmed</p>
+                            <p class="card-text">Time: Tuesday, 12:30 PM</p>
+                            <button class="btn btn-primary">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3" data-class="Computer Systems">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Computer Systems</h5>
+                            <p class="card-text">Tutor: Mohammed</p>
+                            <p class="card-text">Time: Monday, 11:00 AM</p>
+                            <button class="btn btn-primary">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3" data-class="Statistics">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Statistics</h5>
+                            <p class="card-text">Tutor: Jill</p>
+                            <p class="card-text">Time: Thursday, 8:00 AM</p>
+                            <button class="btn btn-primary">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3" data-class="Microeconomics">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Microeconomics</h5>
+                            <p class="card-text">Tutor: John Doe</p>
+                            <p class="card-text">Time: Monday, 2:00 PM</p>
+                            <button class="btn btn-primary">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+  </div>
+  <footer class="footer">
+    <p>&copy; 2024 (Website Name). All rights reserved.</p>
+  </footer>
+      <!-- Bootstrap & jQuery for filtering -->
+      <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+      <script>
+          // Filtering classes based on search input
+          $('#search').on('keyup', function() {
+              var value = $(this).val().toLowerCase();
+              $('#classList .col-md-4').filter(function() {
+                  $(this).toggle($(this).attr('data-class').toLowerCase().includes(value));
+              });
+          });
+      </script>
+</body>
+</html>
