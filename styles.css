@@ -1,0 +1,75 @@
+/* Wrapper Layout */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #F7F1E3;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.wrapper {
+  flex: 1; /* Allows the wrapper to take up remaining space above the footer */
+}
+
+/* Navbar Styles */
+.navbar {
+  background-color: #2C3E50;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #FFC107;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #333;
+}
+
+/* Main Content */
+.content {
+  padding: 2rem;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+h2 {
+  color: #2C3E50;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 1rem 0;
+  background-color: #FFC107;
+  color: #555;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+}

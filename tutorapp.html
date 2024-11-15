@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply to Be a Tutor</title>
+  <link rel="stylesheet" href="tutorstyles.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+          <h1 class="logo">Website name</h1>
+          <nav>
+            <ul class="nav-links">
+              <li><a href="./default.html">Home</a></li>
+              <li><a href="">Browse Classes</a></li>
+              <li><a href="./tutorapp.html">Tutor Applicaiton</a></li>
+              <li><a href="">Sign In</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+  <div class="form-container">
+    <h1>Apply to Be a Tutor</h1>
+    <form id="tutor-application-form">
+      <!-- Full Name -->
+      <label for="full-name">Full Name:</label>
+      <input type="text" id="full-name" name="full-name" placeholder="Enter your full name" required>
+
+      <!-- College ID -->
+      <label for="college-id">College ID:</label>
+      <input type="text" id="college-id" name="college-id" placeholder="Enter your college ID" required>
+
+      <!-- Current Standing -->
+      <label for="standing">Current Standing:</label>
+      <select id="standing" name="standing" required>
+        <option value="" disabled selected>Select your standing</option>
+        <option value="freshman">Freshman</option>
+        <option value="sophomore">Sophomore</option>
+        <option value="junior">Junior</option>
+        <option value="senior">Senior</option>
+      </select>
+
+      <!-- College Major -->
+      <label for="major">College Major:</label>
+      <input type="text" id="major" name="major" placeholder="Enter your major" required>
+
+      <!-- Course to Tutor -->
+      <label for="course">Course to Tutor:</label>
+      <input type="text" id="course" name="course" placeholder="Enter the course name or code" required>
+
+      <!-- Grade in Course -->
+      <label for="grade">Grade in the Course:</label>
+      <select id="grade" name="grade" required>
+        <option value="" disabled selected>Select your grade</option>
+        <option value="A">A</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B">B</option>
+      </select>
+
+      <!-- Submit Button -->
+      <button type="submit">Submit Application</button>
+    </form>
+  </div>
+  <footer class="footer">
+    <p>&copy; 2024 (Website Name). All rights reserved.</p>
+  </footer>
+  <script>
+    // Simulate user login state (you can replace this with actual logic)
+    const isLoggedIn = localStorage.getItem('auth_token') !== null; // Example logic: check if token exists
+  
+    document.addEventListener("DOMContentLoaded", () => {
+      const navLinks = document.querySelectorAll(".nav-links li a");
+  
+      navLinks.forEach(link => {
+        if (link.textContent.trim() === "Sign In" && isLoggedIn) {
+          link.textContent = "View Profile"; // Change text to 'View Profile'
+          link.setAttribute("href", "./profile.html"); // Update the link to go to the profile page
+        }
+      });
+    });
+  </script>
+</body>
+</html>
