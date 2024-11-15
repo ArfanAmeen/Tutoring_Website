@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webpage with Sticky Footer</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+      .profile-card {
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
+          padding: 2rem;
+      }
+      .form-control[disabled] {
+          background-color: #e9ecef;
+      }
+      .logout-btn {
+          margin-left: auto;
+      }
+  </style>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="wrapper">
+    <header class="navbar">
+      <div class="container">
+        <h1 class="logo">Website name</h1>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./browse.html">Browse Sessions</a></li>
+            <li><a href="./tutorapp.html">Tutor Applicaiton</a></li>
+            <li><a href="./managesession.html">View Sessions</a></li>
+            <li><a href="./profile.html">View Profile</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="content">
+
+    <!-- Profile Content -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">User Profile</h2>
+        <div class="profile-card bg-white">
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullName">Name</label>
+                <input type="text" id="fullName" class="form-control" value="John Doe" disabled>
+                <button class="btn btn-sm btn-outline-primary mt-2" onclick="enableEdit('fullName')">Edit</button>
+            </div>
+
+            <!-- AUS ID -->
+            <div class="form-group">
+                <label for="ausId">AUS ID</label>
+                <input type="text" id="ausId" class="form-control" value="123456" disabled>
+                <button class="btn btn-sm btn-outline-primary mt-2" onclick="enableEdit('ausId')">Edit</button>
+            </div>
+
+            <!-- AUS Email -->
+            <div class="form-group">
+                <label for="email">AUS Email</label>
+                <input type="email" id="email" class="form-control" value="johndoe@aus.edu" disabled>
+                <button class="btn btn-sm btn-outline-primary mt-2" onclick="enableEdit('email')">Edit</button>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" value="password123" disabled>
+                <button class="btn btn-sm btn-outline-primary mt-2" onclick="enableEdit('password')">Edit</button>
+            </div>
+
+            <!-- Major -->
+            <div class="form-group">
+                <label for="major">Major</label>
+                <input type="text" id="major" class="form-control" value="Computer Science" disabled>
+                <button class="btn btn-sm btn-outline-primary mt-2" onclick="enableEdit('major')">Edit</button>
+            </div>
+
+            <!-- Courses to Tutor (Shown only for tutors) -->
+            <div class="form-group" id="coursesToTutorSection" style="display: none;">
+                <label for="courses">Courses to Tutor</label>
+                <textarea id="courses" class="form-control" rows="3" disabled>Mathematics, Physics</textarea>
+                <button class="btn btn-sm btn-outline-primary mt-2" onclick="enableEdit('courses')">Edit</button>
+            </div>
+
+            <!-- Save Changes Button -->
+            <button class="btn btn-success mt-3" id="saveChangesBtn" onclick="saveChanges()">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and custom JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const isTutor = true; // Change this to `false` for non-tutors.
+
+        // Enable editing for a specific field
+        function enableEdit(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.disabled = false;
+            field.focus();
+        }
+
+        // Show/Hide "Courses to Tutor" field based on tutor status
+        document.addEventListener("DOMContentLoaded", function () {
+            const coursesToTutorSection = document.getElementById("coursesToTutorSection");
+            if (isTutor) {
+                coursesToTutorSection.style.display = "block";
+            }
+        });
+
+        // Save changes function
+        function saveChanges() {
+            // Gather updated values
+            const fullName = document.getElementById("fullName").value;
+            const ausId = document.getElementById("ausId").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const major = document.getElementById("major").value;
+            const courses = document.getElementById("courses").value;
+
+            // Disable all fields after saving
+            document.querySelectorAll(".form-control").forEach(field => (field.disabled = true));
+
+            // Show a confirmation message (replace with backend API calls)
+            alert("Profile updated successfully!\n\n" +
+                `Name: ${fullName}\n` +
+                `AUS ID: ${ausId}\n` +
+                `Email: ${email}\n` +
+                `Password: ${password}\n` +
+                `Major: ${major}\n` +
+                (isTutor ? `Courses to Tutor: ${courses}` : ""));
+        }
+    </script>
+    </main>
+  </div>
+  <footer class="footer">
+    <p>&copy; 2024 (Website Name). All rights reserved.</p>
+  </footer>
+</body>
+</html>
