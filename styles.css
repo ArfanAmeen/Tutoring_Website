@@ -76,6 +76,10 @@ h2 {
   text-align: center;
 }
 
+.tutor-content{
+  display: none;
+}
+
 /* Footer */
 .footer {
   text-align: center;

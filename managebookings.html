@@ -19,6 +19,7 @@
             <li><a href="./tutorapp.html" class="btn" >Tutor Applicaiton</a></li>
             <li><a href="./managebookings.html" class="btn" >View Bookings</a></li>
             <li><a href="./profile.html" class="btn" >View Profile</a></li>
+            <li><a href="./managesession.html" class="btn tutor-content" id = "tutor-content">View Sessions</a></li>
             <li><a href="./login.html" class="btn btn-outline-light logout-btn">Logout</a></li>
           </ul>
         </nav>
@@ -67,5 +68,37 @@
   <footer class="footer">
     <p>&copy; 2024 (Website Name). All rights reserved.</p>
   </footer>
+  <script>
+    // Set up users in localStorage
+    const users = [
+        { username: "tutor@gmail.com", password: "123456", role: "Tutor" },
+        { username: "student@gmail.com", password: "123456", role: "Student" }
+    ];
+
+    // Store users in localStorage
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // Login functionality
+    document.querySelector("form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent form from submitting normally
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        // Retrieve stored users
+        const storedUsers = JSON.parse(localStorage.getItem("users"));
+
+        // Validate credentials
+        const user = storedUsers.find(user => user.username === email && user.password === password);
+
+        if (user) {
+            window.location.href = "index.html";
+            localStorage.setItem("User", JSON.stringify({ username: user.username, role: user.role }));
+        } else {
+            alert("Invalid username or password!");
+        }
+    });
+</script>
+
 </body>
 </html>
