@@ -105,35 +105,24 @@
           });
       </script>
       <script>
-        // Set up users in localStorage
-        const users = [
-            { username: "tutor@gmail.com", password: "123456", role: "Tutor" },
-            { username: "student@gmail.com", password: "123456", role: "Student" }
-        ];
+        // Retrieve the authenticated user from localStorage
+        const User = JSON.parse(localStorage.getItem("User"));
     
-        // Store users in localStorage
-        localStorage.setItem("users", JSON.stringify(users));
+        // Check if the user is logged in
+  
+          const { role } = User;
     
-        // Login functionality
-        document.querySelector("form").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent form from submitting normally
+          // Toggle element visibility based on the user's role
+          const tutorOnlyElement = document.getElementById("tutor-content")
+          const studentOnlyElement = document.getElementById("student-content");
     
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-    
-            // Retrieve stored users
-            const storedUsers = JSON.parse(localStorage.getItem("users"));
-    
-            // Validate credentials
-            const user = storedUsers.find(user => user.username === email && user.password === password);
-    
-            if (user) {
-                window.location.href = "index.html";
-                localStorage.setItem("User", JSON.stringify({ username: user.username, role: user.role }));
-            } else {
-                alert("Invalid username or password!");
+          if (role === "Tutor") {
+              if (tutorOnlyElement) tutorOnlyElement.style.display = "block"; // Show Tutor-specific content
+              if (studentOnlyElement) studentOnlyElement.style.display = "none"; // Hide Student-specific content
+          } else{
+              if (tutorOnlyElement) tutorOnlyElement.style.display = "none"; // Hide Tutor-specific content
+              if (studentOnlyElement) studentOnlyElement.style.display = "block"; // Show Student-specific content
             }
-        });
     </script>
 </body>
 </html>
