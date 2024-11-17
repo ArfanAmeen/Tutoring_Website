@@ -80,6 +80,10 @@ h2 {
   display: none;
 }
 
+.sign-up{
+  color: blue;
+}
+
 /* Footer */
 .footer {
   text-align: center;
