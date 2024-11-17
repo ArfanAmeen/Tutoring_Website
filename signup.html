@@ -11,7 +11,7 @@
     <div class="container d-flex justify-content-center align-items-center vh-100">
         <div class="card p-5 shadow" style="width: 400px;">
             <h1 class="text-center mb-4">Sign Up</h1>
-            <form>
+            <form id = signup-form>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
@@ -27,33 +27,32 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Set up users in localStorage
-        const users = [
-            { username: "tutor@gmail.com", password: "123456", role: "Tutor" },
-            { username: "student@gmail.com", password: "123456", role: "Student" }
-        ];
-    
-        // Store users in localStorage
-        localStorage.setItem("users", JSON.stringify(users));
-    
-        // Login functionality
-        document.querySelector("form").addEventListener("submit", function (event) {
+        document.getElementById("signup-form").addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent form from submitting normally
-    
+        
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-    
-            // Retrieve stored users
-            const storedUsers = JSON.parse(localStorage.getItem("users"));
-    
-            // Validate credentials
-            const user = storedUsers.find(user => user.username === email && user.password === password);
-    
-            if (user) {
-                window.location.href = "index.html";
-                localStorage.setItem("User", JSON.stringify({ username: user.username, role: user.role }));
+            const role = 'Student';
+        
+            // Retrieve existing users from localStorage or initialize an empty array
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+        
+            // Check if the email is already registered
+            const userExists = users.some(user => user.username === email);
+        
+            if (userExists) {
+                alert("This email is already registered. Please log in.");
             } else {
-                alert("Invalid username or password!");
+                // Add the new user to the users array
+                const newUser = { username: email, password: password, role: role };
+                users.push(newUser);
+
+                // Store the updated users array in localStorage
+                localStorage.setItem("users", JSON.stringify(users));
+
+                alert("Signup successful! You can now log in.");
+                // Redirect to login page
+                window.location.href = "login.html";
             }
         });
     </script>
