@@ -66,6 +66,16 @@ h2 {
   color: #2C3E50;
 }
 
+.about{
+  color: #2C3E50;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.about-text{
+  text-align: center;
+}
+
 /* Footer */
 .footer {
   text-align: center;
