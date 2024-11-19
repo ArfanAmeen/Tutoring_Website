@@ -17,13 +17,13 @@ function loadSessions() {
 
                 // Call addSessionToTable for each session
                 sessions.forEach(session => {
-                    const { sessionId,course,dateTime,sessionType } = session;
+                    const { sessionId, course, sessionType, dateTime, booked } = session;
 
                     const formattedDateTime = new Date(dateTime).toLocaleString("en-US", {
                         dateStyle: "medium",
                         timeStyle: "short",
                     });
-                    addSessionToTable(sessionId, course, sessionType,formattedDateTime);
+                    addSessionToTable(sessionId, course, sessionType,formattedDateTime, booked);
                 });
             } 
         } catch (error) {
@@ -32,7 +32,7 @@ function loadSessions() {
     } 
 }
 
-function addSessionToTable(sessionId, course, sessionType, dateTime) {
+function addSessionToTable(sessionId, course, sessionType, dateTime, Booked) {
     // Create a new row
     const newRow = document.createElement("tr");
     newRow.id = sessionId;
@@ -42,6 +42,7 @@ function addSessionToTable(sessionId, course, sessionType, dateTime) {
         <td>${course}</td>
         <td>${sessionType}</td>
         <td>${dateTime}</td>
+        <td>${Booked}</td>
         <td>
             <button class="btn btn-info btn-sm" onclick="enterSession('${sessionId}')">Enter Session</button>
             <button class="btn btn-danger btn-sm" onclick="deleteSession('${sessionId}')">Delete</button>
@@ -62,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addSessionForm = document.getElementById("addSessionForm");
 
     // Function to add a session row to the table
-    function addSessionToTable(sessionId, course, sessionType, dateTime) {
+    function addSessionToTable(sessionId, course, sessionType, dateTime,booked) {
         // Create a new row
         const newRow = document.createElement("tr");
         newRow.id = sessionId;
@@ -72,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${course}</td>
             <td>${sessionType}</td>
             <td>${dateTime}</td>
+            <td>${booked}</td>
             <td>
                 <button class="btn btn-info btn-sm" onclick="enterSession('${sessionId}')">Enter Session</button>
                 <button class="btn btn-danger btn-sm" onclick="deleteSession('${sessionId}')">Delete</button>
@@ -110,19 +112,18 @@ document.addEventListener("DOMContentLoaded", () => {
             dateStyle: "medium",
             timeStyle: "short",
         });
-
         // Add new session row to the table
-        addSessionToTable(sessionId, course, sessionType, formattedDateTime);
+        addSessionToTable(sessionId, course, sessionType, formattedDateTime,booked = "No");
     
         // Retrieve the existing sessions list, or initialize an empty array if not found
         const sessions = JSON.parse(localStorage.getItem(userKey)) || [];
-    
         // Create a new session object
         const newSession = {
             sessionId,
             course,
             dateTime,
-            sessionType
+            sessionType,
+            booked
         };
     
         // Add the new session to the sessions list
