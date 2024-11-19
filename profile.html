@@ -82,8 +82,7 @@
             <!-- Courses to Tutor (Shown only for tutors) -->
             <div class="form-group" id="coursesToTutorSection" style="display: none;">
                 <label for="courses">Courses to Tutor</label>
-                <textarea id="courses" class="form-control" rows="3" disabled>Mathematics, Physics</textarea>
-                <button class="btn btn-sm btn-outline-primary mt-2" onclick="enableEdit('courses')">Edit</button>
+                <textarea id="courses" class="form-control" rows="3" disabled></textarea>
             </div>
 
             <!-- Save Changes Button -->
@@ -96,7 +95,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        const isTutor = true; // Change this to `false` for non-tutors.
 
         // Enable editing for a specific field
         function enableEdit(fieldId) {
@@ -108,7 +106,7 @@
         // Show/Hide "Courses to Tutor" field based on tutor status
         document.addEventListener("DOMContentLoaded", function () {
             const coursesToTutorSection = document.getElementById("coursesToTutorSection");
-            if (isTutor) {
+            if (JSON.parse(localStorage.getItem("User")).role === "Tutor") {
                 coursesToTutorSection.style.display = "block";
             }
         });
@@ -126,16 +124,104 @@
             // Disable all fields after saving
             document.querySelectorAll(".form-control").forEach(field => (field.disabled = true));
 
+            const userString = localStorage.getItem("User");
+            
+            try {
+                // Parse the current user data
+                const user = JSON.parse(userString);
+            
+                 // Update user object with the values from the form fields
+                user.name = document.getElementById("fullName").value || user.name;
+                user.ausID = document.getElementById("ausId").value || user.ausID;
+                user.username = document.getElementById("email").value || user.username;
+                user.password = document.getElementById("password").value || user.password;
+                user.Major = document.getElementById("major").value || user.Major;
+            
+                // If the "Courses to Tutor" section is visible, update the courses
+                const coursesField = document.getElementById("courses");
+                if (coursesField && !coursesField.disabled) {
+                    const coursesText = coursesField.value.trim();
+                    user.courses = coursesText ? coursesText.split(",").map(course => course.trim()) : user.courses;
+                }
+            
+                // Save the updated user object back into localStorage
+                localStorage.setItem("User", JSON.stringify(user));
+            
+                // Update the users list in localStorage
+                const usersString = localStorage.getItem("users");
+                const users = usersString ? JSON.parse(usersString) : [];
+                const userIndex = users.findIndex(u => u.username === user.username);
+            
+                if (userIndex > -1) {
+                    // Update the existing user
+                    users[userIndex] = user;
+                } else {
+                    // Add the user if not already in the list
+                    users.push(user);
+                }
+            
+                // Save the updated users list to localStorage
+                localStorage.setItem("users", JSON.stringify(users));
+            } catch (error) {
+                console.error("Error saving user data:", error);
+            }
             // Show a confirmation message (replace with backend API calls)
             alert("Profile updated successfully!\n\n" +
-                `Name: ${fullName}\n` +
-                `AUS ID: ${ausId}\n` +
-                `Email: ${email}\n` +
-                `Password: ${password}\n` +
-                `Major: ${major}\n` +
-                (isTutor ? `Courses to Tutor: ${courses}` : ""));
+            `Name: ${fullName}\n` +
+            `AUS ID: ${ausId}\n` +
+            `Email: ${email}\n` +
+            `Password: ${password}\n` +
+            `Major: ${major}\n`);
         }
+
+        
     </script>
+
+    <script>
+        // Function to populate the form fields with user data
+function populateFormFields() {
+    // Get the user data from localStorage
+    const userString = localStorage.getItem("User");
+
+    if (userString) {
+        try {
+            // Parse the JSON string
+            const user = JSON.parse(userString);
+
+            // Populate the form fields with the user's information
+            document.getElementById("fullName").value = user.name;
+            document.getElementById("ausId").value = user.ausID || "";
+            document.getElementById("email").value = user.username || "";
+            document.getElementById("password").value = user.password || "";
+            document.getElementById("major").value = user.Major || "";
+
+            // If the user's role is "Tutor", display the courses section and populate it
+            if (user.role === "Tutor") {
+                const coursesSection = document.getElementById("coursesToTutorSection");
+                coursesSection.style.display = "block"; // Show the section
+
+                const coursesField = document.getElementById("courses");
+                coursesField.value = user.courses ? user.courses.join(", ") : ""; // Format courses as a comma-separated string
+            }
+        } catch (error) {
+            console.error("Error parsing user data from localStorage:", error);
+        }
+    } 
+}
+
+// Function to enable editing for a specific field
+function enableEdit(fieldId) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+        field.disabled = false; // Enable the field
+        field.focus(); // Optionally set focus on the field
+    }
+}
+
+// Call the function when the page loads
+document.addEventListener("DOMContentLoaded", populateFormFields);
+    </script>
+
     </main>
   </div>
   <footer class="footer">

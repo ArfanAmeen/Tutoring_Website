@@ -31,9 +31,9 @@
         // Set up users in localStorage
         if (!localStorage.getItem("users")){
             const users = [
-            { username: "tutor@gmail.com", password: "123456", role: "Tutor" },
-            { username: "tutor2@gmail.com", password: "123456", role: "Tutor" },
-            { username: "student@gmail.com", password: "123456", role: "Student" }
+            { username: "tutor@aus.edu", password: "123456", role: "Tutor", ausID: "12345", name: "Tutor 1", Major: "CSE",  courses: ["CMP120","CMP220"]},
+            { username: "tutor2@aus.edu", password: "123456", role: "Tutor", ausID: "19391", name: "Tutor 2", Major: "COE",  courses: ["CMP120","CMP220"]},
+            { username: "student@aus.edu", password: "123456", role: "Student", ausID: "00001", name: "Student 1", Major: "CHE", courses: "N/A" }
         ];
             // Store users in localStorage
             localStorage.setItem("users", JSON.stringify(users));
@@ -54,7 +54,7 @@
     
             if (user) {
                 window.location.href = "index.html";
-                localStorage.setItem("User", JSON.stringify({ username: user.username, role: user.role }));
+                localStorage.setItem("User", JSON.stringify({ username: user.username,password: user.password, role: user.role, ausID: user.ausID, name: user.name, Major:user.Major, courses: user.courses }));
             } else {
                 alert("Invalid username or password!");
             }
