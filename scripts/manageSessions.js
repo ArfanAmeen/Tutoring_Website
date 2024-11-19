@@ -20,11 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         // Append the new row to the table
-        sessionsTableBody.appendChild(newRow);
+        document.getElementById("sessionsTableBody").appendChild(newRow);
     }
 
     // Add event listener to handle form submission
-    addSessionForm.addEventListener("submit", (e) => {
+    document.getElementById("addSessionForm").addEventListener("submit", (e) => {
         e.preventDefault();
 
         // Get form values

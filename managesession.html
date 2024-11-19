@@ -26,59 +26,61 @@
       </div>
     </header>
     <main class="content">    
-        <div class="container mt-5">
-            <h1 class="mb-4">Manage Sessions</h1>
-            <button class="btn btn-primary mb-3">Add New Session</button>
-            <table class="table table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Course</th>
-                        <th>Session Type</th>
-                        <th>Date & Time</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>CMP 120</td>
-                        <td>Group</td>
-                        <td>Nov 20, 2024 | 10:00 AM</td>
-                        <td>
-                            <button class="btn btn-info btn-sm" onclick="enterSession('sessionID1')">Enter Session</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteSession('sessionID1')">Delete</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CMP 220</td>
-                        <td>Individual</td>
-                        <td>Nov 23, 2024 | 3:00 PM</td>
-                        <td>
-                            <button class="btn btn-info btn-sm" onclick="enterSession('sessionID2')">Enter Session</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteSession('sessionID2')">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <div class="container mt-5">
+        <h1 class="mb-4">Manage Sessions</h1>
+        <button class="btn btn-primary mb-3" id="addSessionButton" data-bs-toggle="modal" data-bs-target="#addSessionModal">Add New Session</button>
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Course</th>
+                    <th>Session Type</th>
+                    <th>Date & Time</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="sessionsTableBody">
+            </tbody>
+        </table>
+    </div>
 
-        
-    
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            // Placeholder functions for session actions
-            function enterSession(sessionID) {
-                alert(`Entering session: ${sessionID}`);
-                // Redirect to session page
-                window.location.href = `/session/${sessionID}`;
-            }
-    
-            function deleteSession(sessionID) {
-                if (confirm("Are you sure you want to delete this session?")) {
-                    alert(`Session ${sessionID} deleted.`);
-                    // Logic to delete session goes here
-                }
-            }
-        </script>
+    <!-- Modal -->
+    <div class="modal fade" id="addSessionModal" tabindex="-1" aria-labelledby="addSessionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSessionModalLabel">Add New Session</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSessionForm">
+                        <div class="mb-3">
+                            <label for="courseSelect" class="form-label">Course</label>
+                            <select class="form-select" id="courseSelect" required>
+                                <option value="CMP 120">CMP 120</option>
+                                <option value="CMP 220">CMP 220</option>
+                                <option value="CMP 420">CMP 320</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateTimePicker" class="form-label">Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="dateTimePicker" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Session Type</label><br>
+                            <input type="radio" id="groupSession" name="sessionType" value="Group" required>
+                            <label for="groupSession">Group</label><br>
+                            <input type="radio" id="individualSession" name="sessionType" value="Individual">
+                            <label for="individualSession">Individual</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Session</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/manageSessions.js" defer></script>
     </main>
   </div>
   <footer class="footer">
