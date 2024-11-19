@@ -29,64 +29,102 @@
     <main class="content">
         <div class="container mt-5">
             <h2 class="text-center">Browse Available Sessions</h2>
-
+    
             <!-- Search Bar -->
             <div class="row mb-5">
                 <div class="col-md-12">
                     <input type="text" id="search" class="form-control" placeholder="Search for sessions...">
                 </div>
             </div>
-
+    
             <!-- Class List -->
             <div class="row" id="classList">
-                <!-- Hard coded, not from Database Example class cards -->
-                <div class="col-md-4 mb-3" data-class="Calculus I">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Calculus I</h5>
-                            <p class="card-text">Tutor: Ahmed</p>
-                            <p class="card-text">Time: Tuesday, 12:30 PM</p>
-                            <button class="btn btn-primary">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-3" data-class="Computer Systems">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Computer Systems</h5>
-                            <p class="card-text">Tutor: Mohammed</p>
-                            <p class="card-text">Time: Monday, 11:00 AM</p>
-                            <button class="btn btn-primary">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-3" data-class="Statistics">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Statistics</h5>
-                            <p class="card-text">Tutor: Jill</p>
-                            <p class="card-text">Time: Thursday, 8:00 AM</p>
-                            <button class="btn btn-primary">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 mb-3" data-class="Microeconomics">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Microeconomics</h5>
-                            <p class="card-text">Tutor: John Doe</p>
-                            <p class="card-text">Time: Monday, 2:00 PM</p>
-                            <button class="btn btn-primary">Book Now</button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Dynamic content will be added here -->
             </div>
         </div>
-
     </main>
+    
+    <script>
+        // Function to dynamically load unbooked sessions from all users
+        function loadUnbookedSessions() {
+            const usersString = localStorage.getItem("users");
+            if (!usersString) {
+                console.error("No users found in localStorage.");
+                return;
+            }
+    
+            try {
+                const users = JSON.parse(usersString); // Parse the "users" list
+                const classListContainer = document.getElementById("classList");
+    
+                // Clear existing content
+                classListContainer.innerHTML = "";
+    
+                // Loop through each user
+                users.forEach(user => {
+                    const username = user.username;
+    
+                    // Retrieve sessions for the current user
+                    const sessionsString = localStorage.getItem(`sessions_${username}`);
+                    const sessions = sessionsString ? JSON.parse(sessionsString) : [];
+    
+                    // Filter unbooked sessions
+                    const unbookedSessions = sessions.filter(session => session.booked === "No");
+    
+                    // Add a card for each unbooked session
+                    unbookedSessions.forEach(session => {
+                        const { sessionId, course, sessionType, dateTime } = session;
+    
+                        // Create card HTML
+                        const cardHTML = `
+                            <div class="col-md-4 mb-3" data-class="${course}">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${course} (${sessionType})</h5>
+                                        <p class="card-text">Tutor: ${user.name}</p>
+                                        <p class="card-text">Time: ${new Date(dateTime).toLocaleString("en-US")}</p>
+                                        <button class="btn btn-primary" onclick="bookSession('${sessionId}', '${username}')">Book Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+    
+                        // Append the card to the container
+                        classListContainer.innerHTML += cardHTML;
+                    });
+                });
+    
+                console.log("Unbooked sessions loaded successfully.");
+            } catch (error) {
+                console.error("Error loading unbooked sessions:", error);
+            }
+        }
+    
+        // Function to book a session (marks it as booked for a specific user)
+        function bookSession(sessionId, username) {
+            try {
+                // Retrieve sessions for the specified user
+                const sessionsString = localStorage.getItem(`sessions_${username}`);
+                const sessions = sessionsString ? JSON.parse(sessionsString) : [];
+    
+                // Find and update the session
+                const sessionIndex = sessions.findIndex(session => session.sessionId === sessionId);
+                if (sessionIndex > -1) {
+                    sessions[sessionIndex].booked = "Yes"; // Mark as booked
+                    localStorage.setItem(`sessions_${username}`, JSON.stringify(sessions));
+                    alert(`Session ${sessionId} has been booked!`);
+                    loadUnbookedSessions(); // Reload the list
+                } else {
+                    alert(`Session ${sessionId} not found.`);
+                }
+            } catch (error) {
+                console.error("Error booking session:", error);
+            }
+        }
+    
+        // Load unbooked sessions on page load
+        document.addEventListener("DOMContentLoaded", loadUnbookedSessions);
+    </script>
   </div>
   <footer class="footer">
     <p>&copy; 2024 (Website Name). All rights reserved.</p>
