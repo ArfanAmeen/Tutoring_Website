@@ -63,7 +63,7 @@
                 // Loop through each user
                 users.forEach(user => {
                     const username = user.username;
-    
+                    const name = user.name;
                     // Retrieve sessions for the current user
                     const sessionsString = localStorage.getItem(`sessions_${username}`);
                     const sessions = sessionsString ? JSON.parse(sessionsString) : [];
@@ -83,7 +83,7 @@
                                         <h5 class="card-title">${course} (${sessionType})</h5>
                                         <p class="card-text">Tutor: ${user.name}</p>
                                         <p class="card-text">Time: ${new Date(dateTime).toLocaleString("en-US")}</p>
-                                        <button class="btn btn-primary" onclick="bookSession('${sessionId}', '${username}')">Book Now</button>
+                                        <button class="btn btn-primary" onclick="bookSession('${sessionId}', '${username}', '${name}', '${JSON.parse(localStorage.getItem("User")).username}')">Book Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -100,19 +100,29 @@
             }
         }
     
-        // Function to book a session (marks it as booked for a specific user)
-        function bookSession(sessionId, username) {
+        function bookSession(sessionId, username, name,student_username) {
             try {
                 // Retrieve sessions for the specified user
                 const sessionsString = localStorage.getItem(`sessions_${username}`);
                 const sessions = sessionsString ? JSON.parse(sessionsString) : [];
-    
-                // Find and update the session
+        
+                // Find the session to book
                 const sessionIndex = sessions.findIndex(session => session.sessionId === sessionId);
                 if (sessionIndex > -1) {
-                    sessions[sessionIndex].booked = "Yes"; // Mark as booked
+                    // Mark session as booked
+                    sessions[sessionIndex].booked = "Yes";
                     localStorage.setItem(`sessions_${username}`, JSON.stringify(sessions));
-                    alert(`Session ${sessionId} has been booked!`);
+        
+                    // Retrieve or initialize the user's bookings list
+                    const bookingsKey = `bookings_${student_username}`;
+                    const bookingsString = localStorage.getItem(bookingsKey);
+                    const bookings = bookingsString ? JSON.parse(bookingsString) : [];
+                    console.log(bookingsKey)
+                    // Add the booked session's details to the bookings list
+                    bookings.push(sessions[sessionIndex]);
+                    localStorage.setItem(bookingsKey, JSON.stringify(bookings));
+        
+                    alert(`Session with tutor ${name} has been booked!`);
                     loadUnbookedSessions(); // Reload the list
                 } else {
                     alert(`Session ${sessionId} not found.`);

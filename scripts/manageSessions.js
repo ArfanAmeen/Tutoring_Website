@@ -17,13 +17,13 @@ function loadSessions() {
 
                 // Call addSessionToTable for each session
                 sessions.forEach(session => {
-                    const { sessionId, course, sessionType, dateTime, booked } = session;
+                    const { sessionId, course, sessionType, dateTime, booked,name } = session;
 
                     const formattedDateTime = new Date(dateTime).toLocaleString("en-US", {
                         dateStyle: "medium",
                         timeStyle: "short",
                     });
-                    addSessionToTable(sessionId, course, sessionType,formattedDateTime, booked);
+                    addSessionToTable(sessionId, course, sessionType,formattedDateTime, booked, name);
                 });
             } 
         } catch (error) {
@@ -32,7 +32,7 @@ function loadSessions() {
     } 
 }
 
-function addSessionToTable(sessionId, course, sessionType, dateTime, Booked) {
+function addSessionToTable(sessionId, course, sessionType, dateTime, Booked, name) {
     // Create a new row
     const newRow = document.createElement("tr");
     newRow.id = sessionId;
@@ -113,7 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
             timeStyle: "short",
         });
         // Add new session row to the table
-        addSessionToTable(sessionId, course, sessionType, formattedDateTime,booked = "No");
+        const name = JSON.parse(localStorage.getItem("User")).name
+
+        addSessionToTable(sessionId, course, sessionType, formattedDateTime,booked = "No", name);
     
         // Retrieve the existing sessions list, or initialize an empty array if not found
         const sessions = JSON.parse(localStorage.getItem(userKey)) || [];
@@ -123,7 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
             course,
             dateTime,
             sessionType,
-            booked
+            booked,
+            name
         };
     
         // Add the new session to the sessions list
