@@ -44,7 +44,7 @@ function addBookingToTable(sessionId, course, sessionType, dateTime, Booked, nam
         <td>${name}</td>
         <td>
             <button class="btn btn-info btn-sm" onclick="enterSession('${sessionId}')">Enter Session</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteSession('${sessionId}')">Delete</button>
+            <button class="btn btn-danger btn-sm" onclick="deletebooking('${sessionId}')">Delete</button>
         </td>
     `;
 
@@ -53,25 +53,59 @@ function addBookingToTable(sessionId, course, sessionType, dateTime, Booked, nam
 }
 
 document.addEventListener("DOMContentLoaded", loadbookings);
+function deleteSessionFromAllUsersAndUnbookInTutor(sessionId) {
+    try {
+        const usersString = localStorage.getItem("users");
+        if (!usersString) {
+            console.error("No users found in localStorage.");
+            return;
+        }
 
+        const users = JSON.parse(usersString);
+
+        // Loop through each user
+        users.forEach(user => {
+            const username = user.username;
+            const bookingsKey = `bookings_${username}`;
+
+            // Check if the user has bookings and remove the session
+            const bookingsString = localStorage.getItem(bookingsKey);
+            const bookings = bookingsString ? JSON.parse(bookingsString) : [];
+
+            const updatedBookings = bookings.filter(booking => booking.sessionId !== sessionId);
+
+            // Update bookings if the session was found
+            if (updatedBookings.length !== bookings.length) {
+                localStorage.setItem(bookingsKey, JSON.stringify(updatedBookings));
+                console.log(`Deleted session ${sessionId} from bookings of user: ${username}`);
+            }
+
+            // If the user is a tutor, check their sessions
+            if (user.role === "Tutor") {
+                const tutorSessionsKey = `sessions_${username}`;
+                const tutorSessionsString = localStorage.getItem(tutorSessionsKey);
+                const tutorSessions = tutorSessionsString ? JSON.parse(tutorSessionsString) : [];
+
+                // Find and update the session in the tutor's list
+                const sessionIndex = tutorSessions.findIndex(session => session.sessionId === sessionId);
+                if (sessionIndex > -1) {
+                    tutorSessions[sessionIndex].booked = "No";
+                    localStorage.setItem(tutorSessionsKey, JSON.stringify(tutorSessions));
+                    console.log(`Set booked status to No for session ${sessionId} in tutor's sessions (${username}).`);
+                }
+            }
+        });
+    } catch (error) {
+        console.error("Error handling session removal and unbooking:", error);
+    }
+}
     // Function to delete a session row
     window.deletebooking = (sessionId) => {
         const row = document.getElementById(sessionId);
         if (row) {
             row.remove(); // Remove the row from the table
         }
-        const currentUser = JSON.parse(localStorage.getItem("User")).username;
-
-        const userKey = `bookings_${currentUser}`; // Unique key for the current user's sessions
-
-        // Retrieve the existing sessions list
-        const bookings = JSON.parse(localStorage.getItem(userKey)) || [];
-
-        // Filter out the session with the specified ID
-        const updatedbookings = bookings.filter(booking => booking.sessionId !== sessionId);
-
-        // Update the sessions list in localStorage
-        localStorage.setItem(userKey, JSON.stringify(updatedbookings));
+        deleteSessionFromAllUsersAndUnbookInTutor(sessionId);
 
     };
 
