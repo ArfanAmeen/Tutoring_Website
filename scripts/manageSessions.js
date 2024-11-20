@@ -55,7 +55,38 @@ function addSessionToTable(sessionId, course, sessionType, dateTime, Booked, nam
 
 document.addEventListener("DOMContentLoaded", loadSessions);
 
+function deleteSessionFromAllUsers(sessionId) {
+    try {
+        const usersString = localStorage.getItem("users");
+        if (!usersString) {
+            console.error("No users found in localStorage.");
+            return;
+        }
 
+        const users = JSON.parse(usersString);
+
+        // Loop through each user
+        users.forEach(user => {
+            const username = user.username;
+            const bookingsKey = `bookings_${username}`;
+
+            // Retrieve bookings for the user
+            const bookingsString = localStorage.getItem(bookingsKey);
+            const bookings = bookingsString ? JSON.parse(bookingsString) : [];
+
+            // Filter out the session to delete
+            const updatedBookings = bookings.filter(booking => booking.sessionId !== sessionId);
+
+            // If the bookings list has changed, update localStorage
+            if (updatedBookings.length !== bookings.length) {
+                localStorage.setItem(bookingsKey, JSON.stringify(updatedBookings));
+                console.log(`Deleted session ${sessionId} from bookings of user: ${username}`);
+            }
+        });
+    } catch (error) {
+        console.error("Error deleting session from users' bookings:", error);
+    }
+}
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -165,6 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update the sessions list in localStorage
         localStorage.setItem(userKey, JSON.stringify(updatedSessions));
 
+        deleteSessionFromAllUsers(sessionId)
     };
 
     // Placeholder for entering a session
